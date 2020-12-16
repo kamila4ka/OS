@@ -22,14 +22,14 @@ void parentProcessInfo(){
 	int status;
 	printf("Attribute: Parent. PID: %d.\n", pid);
 	wait(&status);
-	printf("Exiting parent process\n");
+	printf("Exiting parent process with PID: %d.\n", pid);
 	exit(0);
 }
 
 void childProcessInfo(){
 	pid_t pid = getpid();
 	printf("Attribute: Child. PID: %d. Parent PID: %d.\n", pid, getppid());
-	printf("Exiting child process\n");
+	printf("Exiting child process with PID: %d.\n", pid);
 	exit(0);
 }
 
