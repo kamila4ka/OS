@@ -8,13 +8,7 @@ void parentProcessInfo();
 void childProcessInfo();
 
 void atexitFunc(){
-	pid_t pid = fork();
-	if(pid == 0){
-		childProcessInfo();
-	}
-	else{
-		parentProcessInfo();
-	}
+	printf("Currently running process with PID: %d.\n", getpid());
 }
 
 void parentProcessInfo(){
@@ -30,12 +24,20 @@ void childProcessInfo(){
 	pid_t pid = getpid();
 	printf("Attribute: Child. PID: %d. Parent PID: %d.\n", pid, getppid());
 	printf("Exiting child process with PID: %d.\n", pid);
+
 	exit(0);
 }
 
 int main(){
 	if(atexit(atexitFunc)){
 		printf("Error: unregistered function.\n");		
+	}
+	pid_t pid = fork();
+	if(pid == 0){
+		childProcessInfo();
+		}
+	else{
+		parentProcessInfo();
 	}
 
 	return 0;
