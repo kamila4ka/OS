@@ -36,8 +36,8 @@ int main(){
 
 	//child process
 	if(pid == 0){
-		
-		if(fifofd = open(fifofile, O_RDONLY)){
+		fifofd = open(fifofile, O_RDONLY);
+		if(fifofd){
 			sleep(5);
 			read(fifofd, buf, bufsize);		
 			int* childmas = (int*)calloc(3, sizeof(int));
@@ -51,8 +51,8 @@ int main(){
 
 	//parent process
 	else{
-		if(fifofd = open(fifofile, O_WRONLY)){
-			
+		fifofd = open(fifofile, O_WRONLY);
+		if(fifofd){
 		        int* mas = (int*)calloc(3, sizeof(int));
 		        getLocalTime(mas);
 		        sprintf(buf, "Message from parent process.\nPid: %d. Time: %d:%d:%d\n",
