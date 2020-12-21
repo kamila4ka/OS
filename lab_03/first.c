@@ -34,7 +34,7 @@ void deleteSharedMemory(){
 
 void atexitFunc(){
 	struct shmid_ds shminfo;
-	shmctl(shmid, SHM_STAT, &shminfo);
+	shmctl(shmid, IPC_STAT, &shminfo);
 	if(shmid >= 0 && shminfo.shm_segsz != 0){
 		deleteSharedMemory();
 	}
