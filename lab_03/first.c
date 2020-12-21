@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
 	}
 
 	key_t key = ftok("tmpfile", 1);
-	int shmid = shmget(key, 128, IPC_CREAT | 0666);
+	shmid = shmget(key, 128, IPC_CREAT | 0666);
 	if(argc > 1){
 		if(strcmp(argv[1], "-f") == 0){
 			 struct shmid_ds *buf = 0;
