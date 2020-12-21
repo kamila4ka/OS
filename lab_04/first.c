@@ -13,6 +13,7 @@
 
 struct sembuf semwait = { 0, -1, SEM_UNDO };
 struct sembuf semsignal = { 0, 1, SEM_UNDO };
+int shmid;
 
 void getLocalTime(int* mas){
 	time_t timer = time(NULL);
@@ -23,10 +24,32 @@ void getLocalTime(int* mas){
 	mas[2] = localTime.tm_sec;
 }
 
+void deleteSharedMemory(){
+	if(shmctl(shmid, IPC_RMID, 0) == -1){
+		printf("error deleting shared memory\n");
+	}
+	else{
+		printf("successfully deleted shared memory\n");
+	}
+}
+
+
+void atexitFunc(){
+	struct shmid_ds shminfo;
+	shmctl(shmid, SHM_INFO, &shminfo);
+	if(shminfo.shm_segsz != 0){
+		deleteSharedMemory();
+	}							
+}
+
 int main(int argc, char* argv[]){
+	
+	if(atexit(atexitFunc)){
+		printf("error in atexit\n");
+	}
 
 	key_t key = ftok("file", 1);
-	int shmid = shmget(key, 128, IPC_CREAT | 0666);
+	shmid = shmget(key, 128, IPC_CREAT | 0666);
 	if(argc > 1){
 		if(strcmp(argv[1], "-f") == 0){
 			 struct shmid_ds *buf = 0;
@@ -61,7 +84,7 @@ int main(int argc, char* argv[]){
 	}
 
 	key_t semkey = ftok("sem", 1);
-	int semid = semget(semkey, 1, 0666);
+	int semid = semget(semkey, 1, 0666 | IPC_CREAT );
 
 	if(semid == -1){
 		printf("can't get semaphores id\n");
