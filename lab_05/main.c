@@ -4,7 +4,7 @@
 #include <pthread.h>
 
 int numOfThreads = 11;
-int counter = -1;
+int counter = 0;
 int* buf;
 
 pthread_mutex_t mutex;
@@ -25,7 +25,7 @@ void* threadRead(){
 		pthread_mutex_lock(&mutex);
 
 		printf("Идентификатор потока: %ld. Размер массива: %d\n", (long)pthread_self(), 
-				buf[counter] + 1);
+				buf[counter]);
 		pthread_mutex_unlock(&mutex);
 		sleep(rand() % 10);
 	}
