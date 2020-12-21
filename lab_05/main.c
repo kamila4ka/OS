@@ -15,6 +15,7 @@ void* threadWrite(){
 		++counter;
 		if(counter < 100) buf[counter] = counter;
 		printf("СЧЕТЧИК == %d\n", counter);
+		fflush(stdout);
 		pthread_mutex_unlock(&mutex);
 		sleep(2);
 	}
@@ -26,6 +27,7 @@ void* threadRead(){
 
 		printf("Идентификатор потока: %ld. Размер массива: %d\n", (long)pthread_self(), 
 				buf[counter]);
+		fflush(stdout);
 		pthread_mutex_unlock(&mutex);
 		sleep(rand() % 10);
 	}
