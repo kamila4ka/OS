@@ -6,6 +6,7 @@
 int numOfThreads = 11;
 int counter = 0;
 int* buf;
+int sizeOfBuf = 100;
 
 pthread_mutex_t mutex;
 pthread_cond_t cond;
@@ -14,10 +15,17 @@ void* threadWrite(){
 	while(1){
 		pthread_mutex_lock(&mutex);
 		++counter;
-		if(counter < 100) buf[counter] = counter;
+		if(counter < sizeOfBuf) buf[counter] = counter;
 		printf("СЧЕТЧИК == %d\n", counter);
 		fflush(stdout);
-		pthread_cond_broadcast(&cond);
+		
+		int randomNumber = rand() % 2;
+		if(randomNumber){
+			pthread_cond_broadcast(&cond);
+		}
+		else{
+			pthread_cond_signal(&cond);
+		}
 		pthread_mutex_unlock(&mutex);
 		sleep(2);
 	}
@@ -36,7 +44,7 @@ void* threadRead(){
 }
 
 int main(){
-	buf = (int*)calloc(100, sizeof(int));
+	buf = (int*)calloc(sizeOfBuf, sizeof(int));
 	
 	int i;
 	pthread_t threads[numOfThreads];
