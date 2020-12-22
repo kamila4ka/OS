@@ -6,14 +6,14 @@
 int numOfThreads = 11;
 int counter = 0;
 int* buf;
-
+int sizeOfBuf = 100;
 pthread_rwlock_t rwlock;
 
 void* threadWrite(){
 	while(1){
 		pthread_rwlock_wrlock(&rwlock);
 		++counter;
-		if(counter < 100) buf[counter] = counter;
+		if(counter < sizeOfBuf) buf[counter] = counter;
 		printf("СЧЕТЧИК == %d\n", counter);
 		fflush(stdout);
 		pthread_rwlock_unlock(&rwlock);
@@ -34,7 +34,7 @@ void* threadRead(){
 }
 
 int main(){
-	buf = (int*)calloc(100, sizeof(int));
+	buf = (int*)calloc(sizeOfBuf, sizeof(int));
 	
 	int i;
 	pthread_t threads[numOfThreads];
