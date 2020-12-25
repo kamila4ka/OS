@@ -15,7 +15,7 @@ int main(){
 
 	DIR* dir;
 	struct dirent* currentEntry;
-	struct stat* fileStatus;
+	struct stat* fileStatus = NULL;
 	dir = opendir(".");
 	if(dir == NULL){
 		perror("Couldn't open directory: ");
@@ -47,7 +47,7 @@ int main(){
 
 			printf("%c%c%c%c%c%c%c%c%c%c ", is_dir, usr_r, usr_w, 
 				usr_x, grp_r, grp_w, grp_x, oth_r, oth_w, oth_x);			
-			printf("%ld %s %s %ju %s %s", fileStatus->st_nlink,
+			printf("%hu %s %s %lld %s %s", fileStatus->st_nlink,
 				usr->pw_name, grp->gr_name, fileStatus->st_size,
 				timeOfLastMod, currentEntry->d_name);	
 
